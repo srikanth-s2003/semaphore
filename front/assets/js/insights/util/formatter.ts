@@ -34,14 +34,21 @@ export const Formatter = {
 
     if (secs >= 3600 * 24) {
       const fullDays = Math.floor(secs / (3600 * 24));
-      return moment.unix(secs).format(`${fullDays}[d] H[h] m[m] s[s]`);
+      const remainingHours = Math.floor((secs % (3600 * 24)) / 3600);
+      const remainingMinutes = Math.floor((secs % 3600) / 60);
+      const remainingSeconds = secs % 60;
+      return `${fullDays}d ${remainingHours}h ${remainingMinutes}m ${remainingSeconds}s`;
     } else if (secs >= 3600) {
-      const duration = moment.duration(secs, `seconds`);
-      return `${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`;
+      const hours = Math.floor(secs / 3600);
+      const minutes = Math.floor((secs % 3600) / 60);
+      const seconds = secs % 60;
+      return `${hours}h ${minutes}m ${seconds}s`;
     } else if (secs >= 60) {
-      return moment.unix(secs).format(`m[m] s[s]`);
+      const minutes = Math.floor(secs / 60);
+      const seconds = secs % 60;
+      return `${minutes}m ${seconds}s`;
     } else {
-      return moment.unix(secs).format(`s[s]`);
+      return `${secs}s`;
     }
   },
 
